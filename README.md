@@ -2,6 +2,8 @@
 
 The action sets up [sccache](https://github.com/mozilla/sccache) for Rust modules.
 
+The action requires `GITHUB_TOKEN` to be set in env.
+
 ## Inputs
 
 | Name | Description | Default |
