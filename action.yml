@@ -4,7 +4,7 @@ inputs:
   version:
     description: The version of sccache to use
     required: true
-    default: 'v0.2.15'
+    default: 'v0.3.1'
   key:
     description: An additional key for the cache
     required: false
