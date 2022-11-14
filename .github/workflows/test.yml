@@ -8,8 +8,6 @@ jobs:
       matrix:
         os: [ubuntu-latest]
       fail-fast: false
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - uses: actions/checkout@v2
         with:
