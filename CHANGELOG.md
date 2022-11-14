@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - do not require GITHUB_TOKEN to be set for the action
 
+### Fixed
+- do not use deprecated GitHub expressions (set-output)
+
 ## [1.0.0] - 2022-04-11
 ### Added
 - action that enables Rust [sccache](https://github.com/mozilla/sccache)

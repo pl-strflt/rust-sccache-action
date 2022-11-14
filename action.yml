@@ -18,9 +18,9 @@ runs:
       name: Checking Rust version
       run: |
         version="$(rustc -vV)"
-        echo "::set-output name=release::$(grep -oP 'release: \K.+' <<< "$version")"
-        echo "::set-output name=host::$(grep -oP 'host: \K.+' <<< "$version")"
-        echo "::set-output name=commit-hash::$(grep -oP 'commit-hash: \K.{0,12}' <<< "$version")"
+        echo "release=$(grep -oP 'release: \K.+' <<< "$version")" >> $GITHUB_OUTPUT
+        echo "host=$(grep -oP 'host: \K.+' <<< "$version")" >> $GITHUB_OUTPUT
+        echo "commit-hash=$(grep -oP 'commit-hash: \K.{0,12}' <<< "$version")" >> $GITHUB_OUTPUT
       shell: bash
     - id: cache
       name: Computing cache key
@@ -36,8 +36,8 @@ runs:
         fi
         key="$key-${{ steps.rust.outputs.release }}-${{ steps.rust.outputs.host }}-${{ steps.rust.outputs.commit-hash }}"
         hash='${{ hashFiles('**/Cargo.toml', '**/Cargo.lock', 'rust-toolchain', 'rust-toolchain.toml') }}'
-        echo "::set-output name=key::$key-${hash:0:20}"
-        echo "::set-output name=restore-key::$key-"
+        echo "key=$key-${hash:0:20}" >> $GITHUB_OUTPUT
+        echo "restore-key=$key-" >> $GITHUB_OUTPUT
       shell: bash
     - name: Installing sccache
       run: |
