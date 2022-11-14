@@ -42,7 +42,7 @@ runs:
     - name: Installing sccache
       run: |
         asset_name='sccache-${{ inputs.version }}-x86_64-unknown-linux-musl'
-        gh release download --repo 'mozilla/sccache' --dir '.' --pattern "$asset_name.tar.gz" '${{ inputs.version }}'
+        curl --retry 5 --no-progress-meter --location --output "$asset_name.tar.gz" "https://github.com/mozilla/sccache/releases/download/${{ inputs.version }}/$asset_name.tar.gz"
         tar -zxf "$asset_name.tar.gz"
         cp "$asset_name/sccache" '/usr/local/bin/sccache'
         chmod +x '/usr/local/bin/sccache'
