@@ -6,7 +6,7 @@ The action sets up [sccache](https://github.com/mozilla/sccache) for Rust module
 
 | Name | Description | Default |
 | --- | --- | --- |
-| version | The version of sccache to use | v0.2.15 |
+| version | The version of sccache to use | v0.3.1 |
 | key | An additional key for the cache | *empty* |
 | shared-key | An additional key that is stable over multiple jobs | *empty* |
 
