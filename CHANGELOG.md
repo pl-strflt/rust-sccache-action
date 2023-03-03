@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.1] - 2023-03-03
+### Fixed
+- how sccache is downloaded on macos
+
 ## [1.1.0] - 2022-11-14
 ### Changed
 - updated the default version of sccache to v0.3.1
