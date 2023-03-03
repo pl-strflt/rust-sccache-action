@@ -24,9 +24,11 @@ runs:
       shell: bash
     - id: platform
       name: Defining Platform to download
+      env:
+        OS: ${{ runner.os }}
       run: |
         platform='unknown-linux-musl'
-        if [[ ${{ inputs.platform }} == *"macos"* ]]; then
+        if [[ "$OS" == "macOS" ]]; then
           platform='apple-darwin'
         fi
         echo "platform=${platform}" >> $GITHUB_OUTPUT
