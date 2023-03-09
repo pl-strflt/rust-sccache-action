@@ -1,5 +1,8 @@
 name: rust sccache
 description: Shared Compilation Cache for Rust
+branding:
+  icon: award
+  color: green
 inputs:
   version:
     description: The version of sccache to use
