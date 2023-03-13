@@ -21,9 +21,9 @@ runs:
       name: Checking Rust version
       run: |
         version="$(rustc -vV)"
-        echo "release=$(grep -oP 'release: \K.+' <<< "$version")" >> $GITHUB_OUTPUT
-        echo "host=$(grep -oP 'host: \K.+' <<< "$version")" >> $GITHUB_OUTPUT
-        echo "commit-hash=$(grep -oP 'commit-hash: \K.{0,12}' <<< "$version")" >> $GITHUB_OUTPUT
+        echo "release=$(sed -En 's/^release: (.+)/\1/p' <<< "$version")" >> $GITHUB_OUTPUT
+        echo "host=$(sed -En 's/^host: (.+)/\1/p' <<< "$version")" >> $GITHUB_OUTPUT
+        echo "commit-hash=$(sed -En 's/^commit-hash: (.{0,12}).*/\1/p' <<< "$version")" >> $GITHUB_OUTPUT
       shell: bash
     - id: platform
       name: Defining Platform to download
