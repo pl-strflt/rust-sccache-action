@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.2] - 2023-03-03
+### Fixed
+- use sed instead of grep on macos
+- use $HOME instead of realpath because the later is not available on macos
+
 ## [1.1.1] - 2023-03-03
 ### Fixed
 - how sccache is downloaded on macos
