@@ -1,12 +1,16 @@
 name: Test
-on: [push]
+on:
+  push:
+    branches:
+      - master
+  pull_request:
 jobs:
   Use-Action:
     name: Use Action
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest]
+        os: [ubuntu-latest, macos-latest]
       fail-fast: false
     steps:
       - uses: actions/checkout@v3
