@@ -10,6 +10,7 @@ The action sets up [sccache](https://github.com/mozilla/sccache) for Rust module
 | key | An additional key for the cache | *empty* |
 | shared-key | An additional key that is stable over multiple jobs | *empty* |
 | skip-save | If set to true, it will use the cache in read-only mode | false |
+| autoclean | If set to true, it will use cargo-cache to clean the cache before saving | false |
 
 ## Env
 
