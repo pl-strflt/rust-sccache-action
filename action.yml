@@ -18,6 +18,10 @@ inputs:
     description: Skip saving the cache
     required: false
     default: 'false'
+  autoclean:
+    description: Automatically clean the cache
+    required: false
+    default: 'false'
 outputs:
   cache-hit:
     description: A boolean value to indicate an exact match was found for the key.
@@ -116,3 +120,12 @@ runs:
         key: ${{ steps.cache.outputs.key }}
         restore-keys: |
           ${{ steps.cache.outputs.restore-key }}
+    - name: Installing cargo-cache
+      if: inputs.autoclean == 'true' && inputs.skip-save == 'false'
+      run: cargo install cargo-cache
+      shell: bash
+    - name: Cleaning cache
+      if: inputs.autoclean == 'true' && inputs.skip-save == 'false'
+      uses: gacts/run-and-post-run@2326bf0e28495c184f5a48e54344bc14c7e19eea # v1.1.0
+      with:
+        post: cargo cache --autoclean

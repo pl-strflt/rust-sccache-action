@@ -24,6 +24,7 @@ jobs:
         with:
           shared-key: ${{ github.run_id }}-${{ github.run_attempt }}
           skip-save: true
+          autoclean: true
       - run: mkdir target
       - env:
           CACHE_HIT: ${{ steps.cache.outputs.cache-hit }}
@@ -52,6 +53,7 @@ jobs:
         with:
           shared-key: ${{ github.run_id }}-${{ github.run_attempt }}
           skip-save: false
+          autoclean: true
       - run: mkdir target
       - env:
           CACHE_HIT: ${{ steps.cache.outputs.cache-hit }}
