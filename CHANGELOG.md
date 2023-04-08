@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - an optional input `skip-save` that allows to skip saving the cache
+- cache related outputs: `cache-hit`, `cache-primary-key`, `cache-matched-key`
 
 ### Fixed
 - restore usage of official actions/cache action(s)
