@@ -5,6 +5,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- an optional input `skip-save` that allows to skip saving the cache
+- cache related outputs: `cache-hit`, `cache-primary-key`, `cache-matched-key`
+
+### Fixed
+- restore usage of official actions/cache action(s)
 
 ## [1.1.2] - 2023-03-03
 ### Fixed

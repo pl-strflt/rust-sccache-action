@@ -14,6 +14,20 @@ inputs:
   shared-key:
     description: An additional key that is stable over multiple jobs
     required: false
+  skip-save:
+    description: Skip saving the cache
+    required: false
+    default: 'false'
+outputs:
+  cache-hit:
+    description: A boolean value to indicate an exact match was found for the key.
+    value: ${{ steps.restore.outputs.cache-hit == 'true' || steps.restore-save.outputs.cache-hit == 'true' }}
+  cache-primary-key:
+    description: Cache primary key passed in the input to use in subsequent steps of the workflow.
+    value: ${{ steps.restore.outputs.cache-primary-key == 'true' || steps.restore-save.outputs.cache-primary-key == 'true' }}
+  cache-matched-key:
+    description: Key of the cache that was restored, it could either be the primary key on cache-hit or a partial/complete match of one of the restore keys.
+    value: ${{ steps.restore.outputs.cache-matched-key == 'true' || steps.restore-save.outputs.cache-matched-key == 'true' }}
 runs:
   using: composite
   steps:
@@ -72,8 +86,25 @@ runs:
           echo "SCCACHE_DIR=$HOME/.cache/sccache" >> $GITHUB_ENV
         fi
       shell: bash
-    - name: Deploying cache
-      uses: env0/cache@64daede5552c68991cba51f3bc0ac2bc26945a11 # https://github.com/actions/cache/pull/489
+    - name: Restore cache
+      id: restore
+      if: env.CACHE_SKIP_SAVE == 'true' || inputs.skip-save == 'true'
+      uses: actions/cache/restore@v3
+      with:
+        path: |
+          ${{ env.SCCACHE_DIR }}
+          ~/.cargo/registry/index/
+          ~/.cargo/registry/cache/
+          ~/.cargo/git/db/
+          target/
+          !target/**/bundle.car
+        key: ${{ steps.cache.outputs.key }}
+        restore-keys: |
+          ${{ steps.cache.outputs.restore-key }}
+    - name: Restore and save cache
+      id: restore-save
+      if: env.CACHE_SKIP_SAVE != 'true' && inputs.skip-save != 'true'
+      uses: actions/cache@v3
       with:
         path: |
           ${{ env.SCCACHE_DIR }}

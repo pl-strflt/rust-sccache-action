@@ -1,0 +1,62 @@
+name: Test Miss
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+jobs:
+  Restore-Cache-Miss:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          path: rust-sccache-action
+      - name: Installing Rust
+        uses: actions-rs/toolchain@16499b5e05bf2e26879000db0c1d13f7e13fa3af # v1.0.7
+        with:
+          toolchain: stable
+      - uses: ./rust-sccache-action
+        id: cache
+        with:
+          key: ${{ github.run_id }}
+          skip-save: true
+      - run: mkdir target
+      - env:
+          CACHE_HIT: ${{ steps.cache.outputs.cache-hit }}
+        run: |
+          if [[ "$CACHE_HIT" != 'false' ]]; then
+            echo 'Cache was hit, but it should not have been.'
+            exit 1
+          fi
+  Restore-Save-Cache-Miss:
+    needs: [Restore-Cache-Miss]
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          path: rust-sccache-action
+      - name: Installing Rust
+        uses: actions-rs/toolchain@16499b5e05bf2e26879000db0c1d13f7e13fa3af # v1.0.7
+        with:
+          toolchain: stable
+      - uses: ./rust-sccache-action
+        id: cache
+        with:
+          key: ${{ github.run_id }}
+          skip-save: false
+      - run: mkdir target
+      - env:
+          CACHE_HIT: ${{ steps.cache.outputs.cache-hit }}
+        run: |
+          if [[ "$CACHE_HIT" != 'false' ]]; then
+            echo 'Cache was hit, but it should not have been.'
+            exit 1
+          fi
