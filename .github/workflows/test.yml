@@ -16,9 +16,7 @@ jobs:
         with:
           path: rust-sccache-action
       - name: Installing Rust
-        uses: actions-rs/toolchain@16499b5e05bf2e26879000db0c1d13f7e13fa3af # v1.0.7
-        with:
-          toolchain: stable
+        uses: dtolnay/rust-toolchain@stable
       - uses: ./rust-sccache-action
         id: cache
         with:
@@ -45,9 +43,7 @@ jobs:
         with:
           path: rust-sccache-action
       - name: Installing Rust
-        uses: actions-rs/toolchain@16499b5e05bf2e26879000db0c1d13f7e13fa3af # v1.0.7
-        with:
-          toolchain: stable
+        uses: dtolnay/rust-toolchain@stable
       - uses: ./rust-sccache-action
         id: cache
         with:
@@ -75,9 +71,7 @@ jobs:
         with:
           path: rust-sccache-action
       - name: Installing Rust
-        uses: actions-rs/toolchain@16499b5e05bf2e26879000db0c1d13f7e13fa3af # v1.0.7
-        with:
-          toolchain: stable
+        uses: dtolnay/rust-toolchain@stable
       - uses: ./rust-sccache-action
         id: cache
         with:
