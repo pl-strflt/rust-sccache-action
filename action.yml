@@ -89,6 +89,8 @@ runs:
         if [ -z '${{ env.SCCACHE_DIR }}' ]; then
           echo "SCCACHE_DIR=$HOME/.cache/sccache" >> $GITHUB_ENV
         fi
+        # Disable incremental builds as they break sccache.
+        echo "CARGO_INCREMENTAL=0" >> $GITHUB_ENV
       shell: bash
     - name: Restore cache
       id: restore
