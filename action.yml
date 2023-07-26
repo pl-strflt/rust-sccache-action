@@ -128,6 +128,6 @@ runs:
       shell: bash
     - name: Cleaning cache
       if: inputs.autoclean == 'true' && inputs.skip-save == 'false'
-      uses: gacts/run-and-post-run@c762f8bf84771bfb9127584f7799f67b68d4b4e5 # v1.2.1
+      uses: gacts/run-and-post-run@fe4132a675276bbabaeea80a61dba37cdb98d2e4 # v1.3.0
       with:
         post: cargo cache --autoclean
