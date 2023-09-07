@@ -22,6 +22,12 @@ inputs:
     description: Automatically clean the cache
     required: false
     default: 'false'
+  cache-size:
+    description: The maximum size of the cache
+    required: false
+  cache-dir:
+    description: The directory to store the cache in
+    required: false
 outputs:
   cache-hit:
     description: A boolean value to indicate an exact match was found for the key.
@@ -86,15 +92,32 @@ runs:
         if [ -z '${{ env.RUSTC_WRAPPER }}' ]; then
           echo 'RUSTC_WRAPPER=sccache' >> $GITHUB_ENV
         fi
-        if [ -z '${{ env.SCCACHE_DIR }}' ]; then
+
+        if [ -z '${{ inputs.cache-dir }}' ]; then
           echo "SCCACHE_DIR=$HOME/.cache/sccache" >> $GITHUB_ENV
+        else
+          echo "SCCACHE_DIR=${{ inputs.cache-dir }}" >> $GITHUB_ENV
         fi
+
+        if [ -n '${{ inputs.cache-size }}' ]; then
+          echo "SCCACHE_CACHE_SIZE=${{ inputs.cache-size }}" >> $GITHUB_ENV
+        fi
+
         # Disable incremental builds as they break sccache.
         echo "CARGO_INCREMENTAL=0" >> $GITHUB_ENV
       shell: bash
+    - name: Setup Debug Logging
+      if: runner.debug == '1'
+      uses: gacts/run-and-post-run@fe4132a675276bbabaeea80a61dba37cdb98d2e4 # v1.3.0
+      with:
+        run: |
+          echo "SCCACHE_ERROR_LOG=/tmp/debug.log" >> $GITHUB_ENV
+          echo "SCCACHE_LOG=debug" >> $GITHUB_ENV
+        post: |
+          cat /tmp/debug.log
     - name: Restore cache
       id: restore
-      if: env.CACHE_SKIP_SAVE == 'true' || inputs.skip-save == 'true'
+      if: inputs.skip-save == 'true'
       uses: actions/cache/restore@v3
       with:
         path: |
@@ -109,7 +132,7 @@ runs:
           ${{ steps.cache.outputs.restore-key }}
     - name: Restore and save cache
       id: restore-save
-      if: env.CACHE_SKIP_SAVE != 'true' && inputs.skip-save != 'true'
+      if: inputs.skip-save != 'true'
       uses: actions/cache@v3
       with:
         path: |
@@ -131,3 +154,7 @@ runs:
       uses: gacts/run-and-post-run@fe4132a675276bbabaeea80a61dba37cdb98d2e4 # v1.3.0
       with:
         post: cargo cache --autoclean
+    - name: Show Caching Statistics
+      uses: gacts/run-and-post-run@fe4132a675276bbabaeea80a61dba37cdb98d2e4 # v1.3.0
+      with:
+        post: sccache --show-stats
