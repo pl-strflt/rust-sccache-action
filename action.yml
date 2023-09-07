@@ -106,6 +106,15 @@ runs:
         # Disable incremental builds as they break sccache.
         echo "CARGO_INCREMENTAL=0" >> $GITHUB_ENV
       shell: bash
+    - name: Setup Debug Logging
+      if: runner.debug == '1'
+      uses: gacts/run-and-post-run@fe4132a675276bbabaeea80a61dba37cdb98d2e4 # v1.3.0
+      with:
+        run: |
+          echo "SCCACHE_ERROR_LOG=/tmp/debug.log" >> $GITHUB_ENV
+          echo "SCCACHE_LOG=debug" >> $GITHUB_ENV
+        post: |
+          cat /tmp/debug.log
     - name: Restore cache
       id: restore
       if: inputs.skip-save == 'true'
@@ -145,3 +154,7 @@ runs:
       uses: gacts/run-and-post-run@fe4132a675276bbabaeea80a61dba37cdb98d2e4 # v1.3.0
       with:
         post: cargo cache --autoclean
+    - name: Show Caching Statistics
+      uses: gacts/run-and-post-run@fe4132a675276bbabaeea80a61dba37cdb98d2e4 # v1.3.0
+      with:
+        post: sccache --show-stats
