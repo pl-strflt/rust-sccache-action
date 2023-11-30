@@ -1,3 +1,8 @@
+> [!WARNING]  
+> This project is now deprecated.
+>
+> Please use [Mozilla-Actions/sccache-action](https://github.com/Mozilla-Actions/sccache-action) instead.
+
 # Rust Shared Compilation Cache Action
 
 The action sets up [sccache](https://github.com/mozilla/sccache) for Rust modules.
